@@ -1,5 +1,7 @@
 package view;
 
+import model.Function;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
@@ -35,9 +37,19 @@ public class OptimizationMethods extends JPanel {
      */
     @Override
     protected void paintComponent(Graphics g) {
-        int[] x = {0, 1, 2},
-        y = {5, 13, 98};
-        g.drawPolyline(x, y, 3);
-        super.paintComponent(g);
+        int n = (int) ((Function.getRight() - Function.getLeft()) / 0.01);
+        n++;
+        int[] x = new int[n];
+        int[] y = new int[n];
+        int j = 0;
+        for (double i = Function.getLeft(); i < Function.getRight(); i += 0.01) {
+            x[j] = 800 + (int) (i * 100);
+            y[j] = 200 + (int) (Function.calculate(i) * 100);
+            j++;
+        }
+        Graphics2D drp = (Graphics2D) g;
+        drp.drawLine(400, 400, 400, 0); // Center: x = 400, y = 200
+        drp.drawLine(0, 200, 800, 200);
+        drp.drawPolyline(x, y, n);
     }
 }
