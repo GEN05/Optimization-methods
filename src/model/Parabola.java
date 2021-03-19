@@ -13,11 +13,15 @@ public class Parabola extends Method {
                 y3 = Function.calculate(x3),
                 previous = 0,
                 x;
+//        int i = 0;
+//        System.out.println("\\textnumero{} & left & right & length & $x$ & $f(x)$ \\\\ \\hline");
         while (true) {
             double a1 = (y2 - y1) / (x2 - x1),
                     a2 = (((y3 - y1) / (x3 - x1)) - ((y2 - y1) / (x2 - x1))) / (x3 - x2);
             x = (x1 + x2 - a1 / a2) / 2;
             double y = Function.calculate(x);
+//            System.out.println(i + " & " + x1 + " & " + x3 + " & " + (x3 - x1) + " & " + x + " & " + y);
+//            i++;
             if (abs(previous - x) < preciseness)
                 return x;
 

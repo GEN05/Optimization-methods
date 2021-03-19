@@ -1,5 +1,7 @@
 package view;
 
+import model.Methods;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,6 +27,8 @@ public class Window extends OptimizationMethods implements ActionListener {
     //  Buttons
     JButton buttonReset;
     JButton buttonDraw;
+
+    JComboBox<Methods> comboBox;
 
     GridBagConstraints gridBagConstraints;
 
@@ -69,22 +73,27 @@ public class Window extends OptimizationMethods implements ActionListener {
         controlPanel.add(buttonReset, gridBagConstraints);
         buttonReset.addActionListener(this);
 
-        buttonDraw = new JButton("Нарисовать");
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridx = 5;
-        controlPanel.add(buttonDraw, gridBagConstraints);
-        buttonDraw.addActionListener(this);
-
         //  Iterations count
         labelIterationsCount = new JLabel("Точность:");
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         controlPanel.add(labelIterationsCount, gridBagConstraints);
+
         fieldPreciseness = new JTextField("0.001");
         fieldPreciseness.setColumns(5);
         gridBagConstraints.gridx = 2;
         controlPanel.add(fieldPreciseness, gridBagConstraints);
         controlPanel.setBackground(Color.getHSBColor(255, 210, 133));
+
+        Methods[] methods = {Methods.parabola, Methods.dichotomy, Methods.fibonacci, Methods.goldenRatio, Methods.brent};
+        comboBox = new JComboBox<>(methods);
+        gridBagConstraints.gridx = 3;
+        controlPanel.add(comboBox, gridBagConstraints);
+
+        buttonDraw = new JButton("Нарисовать");
+        gridBagConstraints.gridx = 5;
+        controlPanel.add(buttonDraw, gridBagConstraints);
+        buttonDraw.addActionListener(this);
 
         containerPanel = new JPanel();
         containerPanel.setLayout(new BorderLayout());

@@ -16,4 +16,9 @@ public abstract class Method {
         this.preciseness = preciseness;
         return calculate();
     }
+
+    public void revert() {
+        left = Function.getLeft();
+        right = Function.getRight();
+    }
 }

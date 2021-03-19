@@ -9,7 +9,7 @@ public class GoldenRatio extends Method {
                 y1 = Function.calculate(x1),
                 x2 = right - (right - left) / (phi + 1),
                 y2 = Function.calculate(x2);
-        while ((right - left) / 2 > preciseness) {
+        while (Math.abs(right - left) / 2 > preciseness) {
             if (y1 < y2) {
                 right = x2;
                 x2 = x1;
