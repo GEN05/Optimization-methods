@@ -42,11 +42,11 @@ public class OptimizationMethods extends JPanel {
         int[] x = new int[n];
         int[] y = new int[n];
         int j = 0;
-        for (double i = Function.getLeft(); i < Function.getRight(); i += 0.01) {
-            x[j] = 800 + (int) (i * 100);
-            y[j] = 200 + (int) (Function.calculate(i) * 100);
-            j++;
-        }
+//        for (double i = Function.getLeft(); i < Function.getRight(); i += 0.01) {
+//            x[j] = 800 + (int) (i * 100);
+//            y[j] = 200 + (int) (Function.calculate(i, left, right) * 100);
+//            j++;
+//        }
         Graphics2D drp = (Graphics2D) g;
         drp.drawLine(400, 400, 400, 0); // Center: x = 400, y = 200
         drp.drawLine(0, 200, 800, 200);

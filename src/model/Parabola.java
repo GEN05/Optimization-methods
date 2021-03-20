@@ -1,48 +1,46 @@
 package model;
 
 import static java.lang.Math.abs;
+/*
+    TODO: в табличках нужно считать количество вызовов "Function.calculate()"
+ */
 
 public class Parabola extends Method {
     @Override
     public double calculate() {
-        double x1 = left,
-                y1 = Function.calculate(x1),
+        beginTable();
+        double y1 = Function.calculate(left, left, right),
                 x2 = (right + left) / 2,
-                y2 = Function.calculate(x2),
-                x3 = right,
-                y3 = Function.calculate(x3),
+                y2 = Function.calculate(x2, left, right),
+                y3 = Function.calculate(right, left, right),
                 previous = 0,
                 x;
-//        int i = 0;
-//        System.out.println("\\textnumero{} & left & right & length & $x$ & $f(x)$ \\\\ \\hline");
         while (true) {
-            double a1 = (y2 - y1) / (x2 - x1),
-                    a2 = (((y3 - y1) / (x3 - x1)) - ((y2 - y1) / (x2 - x1))) / (x3 - x2);
-            x = (x1 + x2 - a1 / a2) / 2;
-            double y = Function.calculate(x);
-//            System.out.println(i + " & " + x1 + " & " + x3 + " & " + (x3 - x1) + " & " + x + " & " + y);
-//            i++;
+            double a1 = (y2 - y1) / (x2 - left),
+                    a2 = (((y3 - y1) / (right - left)) - ((y2 - y1) / (x2 - left))) / (right - x2);
+            x = (left + x2 - a1 / a2) / 2;
+            double y = Function.calculate(x, left, right);
             if (abs(previous - x) < preciseness)
                 return x;
 
-            if (x1 < x && x < x2 && x2 < x3)
+            if (left < x && x < x2 && x2 < right)
                 if (y >= y2) {
-                    x1 = x;
+                    left = x;
                     y1 = y;
                 } else {
-                    x3 = x2;
+                    right = x2;
                     x2 = x;
                     y3 = y2;
                     y2 = y;
                 }
-            else if (x1 < x2 && x2 < x && x < x3)
+            else if (left < x2 && x2 < x && x < right)
                 if (y2 >= y) {
-                    x1 = x2;
+                    left = x2;
                     x2 = x;
                     y1 = y2;
                     y2 = y;
                 } else {
-                    x3 = x;
+                    right = x;
                     y3 = y;
                 }
             previous = x;

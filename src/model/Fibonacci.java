@@ -8,6 +8,7 @@ public class Fibonacci extends Method {
 
     @Override
     public double calculate() {
+        beginTable();
         fibonacciNumbers.add(1L);
         fibonacciNumbers.add(1L);
         while ((right - left) / preciseness >= fibonacciNumbers.get(fibonacciNumbers.size() - 1))
@@ -17,23 +18,22 @@ public class Fibonacci extends Method {
                             .get(fibonacciNumbers.size() - 2));
         int size = fibonacciNumbers.size();
         double x1 = left + (right - left) * ((double) fibonacciNumbers.get(size - 3) / fibonacciNumbers.get(size - 1)),
-                y1 = Function.calculate(x1),
+                y1 = Function.calculate(x1, left, right),
                 x2 = left + (right - left) * ((double) fibonacciNumbers.get(size - 2) / fibonacciNumbers.get(size - 1)),
-                y2 = Function.calculate(x2);
-
+                y2 = Function.calculate(x2, left, right);
         for (int i = 1; i < size - 2; i++) {
             if (y1 > y2) {
                 left = x1;
                 x1 = x2;
                 x2 = left + (right - left) * ((double) fibonacciNumbers.get(size - i - 2) / fibonacciNumbers.get(size - i - 1));
                 y1 = y2;
-                y2 = Function.calculate(x2);
+                y2 = Function.calculate(x2, left, right);
             } else {
                 right = x2;
                 x2 = x1;
                 x1 = left + (right - left) * ((double) fibonacciNumbers.get(size - i - 3) / fibonacciNumbers.get(size - i - 1));
                 y2 = y1;
-                y1 = Function.calculate(x1);
+                y1 = Function.calculate(x1, left, right);
             }
         }
 

@@ -3,48 +3,30 @@ package model;
 public class Brent extends Method {
     @Override
     public double calculate() {
-        double tol = preciseness;
+        beginTable();
+        double c = (3 - Math.sqrt(5)) / 2,
+                d = 0, e = 0,
+                eps = Math.sqrt(1.2e-16),
+                xm = (left + right) / 2,
+                v = left + c * (right - left),
+                w = v, x = v,
+                fx = Function.calculate(x, left, right),
+                fv = fx, fw = fx,
+                tol3 = preciseness / 3,
+                tol1 = eps * Math.abs(x) + tol3,
+                t2 = 2 * tol1,
+                p, q, r, u, fu;
 
-        // Initial parameters; a < b
-        double a = left, b = right;
-
-        // Intermediate variables
-        double c, d, e;
-        double eps, xm, p;
-        double q, r, tol1;
-        double t2, u, v;
-        double w, fu, fv;
-        double fw, fx, x, tol3;
-
-        c = (3.0 - Math.sqrt(5.0)) / 2;
-        d = 0.0;
-
-        eps = 1.2e-16;
-        eps = Math.sqrt(eps);
-
-        v = a + c * (b - a);
-        w = v;
-        x = v;
-        e = 0.0;
-        fx = Function.calculate(x);
-        fv = fx;
-        fw = fx;
-        tol3 = tol / 3.0;
-
-        xm = (a + b) / 2;
-        tol1 = eps * Math.abs(x) + tol3;
-        t2 = 2.0 * tol1;
-
-        while (Math.abs(x - xm) > (t2 - (b - a) / 2)) {
-            p = q = r = 0.0;
+        while (Math.abs(x - xm) > (t2 - (right - left) / 2)) {
+            p = q = r = 0;
 
             if (Math.abs(e) > tol1) {
                 r = (x - w) * (fx - fv);
                 q = (x - v) * (fx - fw);
                 p = (x - v) * q - (x - w) * r;
-                q = 2.0 * (q - r);
+                q = 2 * (q - r);
 
-                if (q > 0.0) {
+                if (q > 0) {
                     p = -p;
                 } else {
                     q = -q;
@@ -54,13 +36,11 @@ public class Brent extends Method {
                 e = d;
             }
 
-            if ((Math.abs(p) < Math.abs(q * r / 2)) && (p > q * (a - x)) && (p < q * (b - x))) {
-                // Parabolic interpolation step
+            if ((Math.abs(p) < Math.abs(q * r / 2)) && (p > q * (left - x)) && (p < q * (right - x))) {
                 d = p / q;
                 u = x + d;
 
-                // f must not be evaluated too close to a or b
-                if (((u - a) < t2) || ((b - u) < t2)) {
+                if (((u - left) < t2) || ((right - u) < t2)) {
                     d = tol1;
 
                     if (x >= xm) {
@@ -68,23 +48,20 @@ public class Brent extends Method {
                     }
                 }
             } else {
-                // Golden ratio step
-                e = (x < xm ? b : a) - x;
+                e = (x < xm ? right : left) - x;
 
                 d = c * e;
             }
 
-            // f must not be evaluated too close to x
-            u = x + (Math.abs(d) >= tol1 ? d : (d > 0.0 ? tol1 : -tol1));
+            u = x + (Math.abs(d) >= tol1 ? d : (d > 0 ? tol1 : -tol1));
 
-            fu = Function.calculate(u);
+            fu = Function.calculate(u, left, right);
 
-            // Update a, b, v, w, and x
             if (fu <= fx) {
                 if (u < x) {
-                    b = x;
+                    right = x;
                 } else {
-                    a = x;
+                    left = x;
                 }
 
                 v = w;
@@ -97,9 +74,9 @@ public class Brent extends Method {
                 fx = fu;
             } else {
                 if (u < x) {
-                    a = u;
+                    left = u;
                 } else {
-                    b = u;
+                    right = u;
                 }
 
                 if ((fu <= fw) || (w == x)) {
@@ -114,9 +91,9 @@ public class Brent extends Method {
                 }
             }
 
-            xm = (a + b) / 2;
+            xm = (left + right) / 2;
             tol1 = eps * Math.abs(x) + tol3;
-            t2 = 2.0 * tol1;
+            t2 = 2 * tol1;
         }
 
         return x;
