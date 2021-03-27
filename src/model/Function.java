@@ -5,6 +5,7 @@ public class Function {
 
     public static double calculate(double x, double left, double right) {
         double result = x * Math.sin(x) + 2 * Math.cos(x);
+//        double result = -1 * Math.pow(x, Math.cos(x)) * Math.exp(Math.sin(x));
         toTable(++counter, left, right, x, result);
         return result;
     }
@@ -23,10 +24,10 @@ public class Function {
     }
 
     public static double getLeft() {
-        return -6.0;
+        return 0.0;
     }
 
     public static double getRight() {
-        return -4.0;
+        return 20.0;
     }
 }

@@ -1,9 +1,6 @@
 package model;
 
 import static java.lang.Math.abs;
-/*
-    TODO: в табличках нужно считать количество вызовов "Function.calculate()"
- */
 
 public class Parabola extends Method {
     @Override
