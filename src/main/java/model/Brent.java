@@ -6,7 +6,7 @@ public class Brent extends Method {
         beginTable();
         double c = (3 - Math.sqrt(5)) / 2,
                 d = 0, e = 0,
-                eps = Math.sqrt(1.2e-16),
+                eps = Math.sqrt(1.2e-5),
                 xm = (left + right) / 2,
                 v = left + c * (right - left),
                 w = v, x = v,
