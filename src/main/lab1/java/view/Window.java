@@ -42,6 +42,7 @@ public class Window extends JPanel implements ActionListener {
     JLabel labelIterationsCount;
     //  Buttons
     JButton buttonReset;
+    JButton buttonNext;
     JButton buttonDraw;
 
     JFreeChart chart;
@@ -117,11 +118,16 @@ public class Window extends JPanel implements ActionListener {
         gridBagConstraints.gridx = 3;
         controlPanel.add(comboBox, gridBagConstraints);
 
-        buttonDraw = new JButton("Дальше");
-//        buttonDraw.setEnabled(false);
-        gridBagConstraints.gridx = 5;
+        buttonDraw = new JButton("Нарисовать");
+        gridBagConstraints.gridx = 4;
         controlPanel.add(buttonDraw, gridBagConstraints);
         buttonDraw.addActionListener(this);
+
+        buttonNext = new JButton("Дальше");
+        buttonNext.setEnabled(false);
+        gridBagConstraints.gridx = 5;
+        controlPanel.add(buttonNext, gridBagConstraints);
+        buttonNext.addActionListener(this);
 
         XYDataset dataset = createDataset(Double.parseDouble(fieldLeftBorder.getText()), Double.parseDouble(fieldRightBorder.getText()));
         chart = createChart(dataset);
@@ -165,10 +171,11 @@ public class Window extends JPanel implements ActionListener {
      * @param right right border.
      */
     private void drawBorder(double left, double right) {
-        dataset.removeSeries(series2);
+        dataset.removeSeries(series4);
         dataset.removeSeries(series3);
-        series2.clear();
+        dataset.removeSeries(series2);
         series3.clear();
+        series2.clear();
         double max = series1.getMaxY(),
                 min = series1.getMinY();
         for (double i = min; i < max; i += (max - min) / 100) {
@@ -177,6 +184,7 @@ public class Window extends JPanel implements ActionListener {
         }
         dataset.addSeries(series2);
         dataset.addSeries(series3);
+        dataset.addSeries(series4);
     }
 
     private JFreeChart createChart(XYDataset dataset) {
@@ -221,45 +229,74 @@ public class Window extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         Object source = event.getSource();
         if (source.equals(buttonReset)) {
-            buttonReset.setFocusable(false);
             buttonDraw.setEnabled(true);
+            buttonNext.setEnabled(false);
+            fieldLeftBorder.setEnabled(true);
+            fieldRightBorder.setEnabled(true);
+            fieldPreciseness.setEnabled(true);
+            comboBox.setEnabled(true);
             fieldLeftBorder.setText("-6.0");
             fieldRightBorder.setText("-4.0");
             fieldPreciseness.setText("0.001");
-            map.clear();
-            makeNullCounter();
-            counter = 0;
-            drawBorder(getLeft(), getRight());
-            chart = createChart(dataset);
+            resetGraphic();
         } else if (source.equals(buttonDraw)) {
-//            buttonDraw.setFocusable(false);
-//            buttonDraw.setEnabled(false);
+            buttonDraw.setEnabled(false);
+            fieldLeftBorder.setEnabled(false);
+            fieldRightBorder.setEnabled(false);
+            fieldPreciseness.setEnabled(false);
+            comboBox.setEnabled(false);
+            buttonNext.setEnabled(true);
+            resetGraphic();
+        } else if (source.equals(buttonNext)) {
             map.clear();
             makeNullCounter();
             double left = Double.parseDouble(fieldLeftBorder.getText()),
-                    right = Double.parseDouble(fieldRightBorder.getText());
-//            updateGraphic(left, right);
+                    right = Double.parseDouble(fieldRightBorder.getText()),
+                    preciseness = Double.parseDouble(fieldPreciseness.getText());
             if (Objects.equals(comboBox.getSelectedItem(), Methods.parabola)) {
-                new Parabola().calculate(left, right);
+                new Parabola().calculate(left, right, preciseness);
                 nextIteration();
             } else if (Objects.equals(comboBox.getSelectedItem(), Methods.dichotomy)) {
                 Dichotomy dichotomy = new Dichotomy();
-                dichotomy.calculate(left, right);
+                dichotomy.calculate(left, right, preciseness);
                 nextIteration();
             } else if (Objects.equals(comboBox.getSelectedItem(), Methods.goldenRatio)) {
                 GoldenRatio goldenRatio = new GoldenRatio();
-                goldenRatio.calculate(left, right);
+                goldenRatio.calculate(left, right, preciseness);
                 nextIteration();
             } else if (Objects.equals(comboBox.getSelectedItem(), Methods.fibonacci)) {
                 Fibonacci fibonacci = new Fibonacci();
-                fibonacci.calculate(left, right);
+                fibonacci.calculate(left, right, preciseness);
                 nextIteration();
             } else if (Objects.equals(comboBox.getSelectedItem(), Methods.brent)) {
                 Brent brent = new Brent();
-                brent.calculate(left, right);
+                brent.calculate(left, right, preciseness);
                 nextIteration();
             }
         }
+    }
+
+    public void resetGraphic() {
+        map.clear();
+        makeNullCounter();
+        counter = 0;
+        series1.clear();
+        series4.clear();
+        double left = Double.parseDouble(fieldLeftBorder.getText());
+        double right = Double.parseDouble(fieldRightBorder.getText());
+        for (double i = left; i < right; i += 0.1) {
+            series1.add(i, calculate(i, left, right));
+        }
+        dataset.removeSeries(series4);
+        dataset.removeSeries(series3);
+        dataset.removeSeries(series2);
+        dataset.removeSeries(series1);
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+        dataset.addSeries(series3);
+
+        drawBorder(left, right);
+        chart = createChart(dataset);
     }
 
     private void nextIteration() {
@@ -274,9 +311,12 @@ public class Window extends JPanel implements ActionListener {
             drawMinimum(minimum);
             chart = createChart(dataset);
         } else {
-            JOptionPane.showMessageDialog(frame, "Вычисление окончено. Абсолютный минимум: x = "
-                    + series4.getMinX()
-                    + "y = " + series4.getMinY());
+            double x = series4.getMinX();
+            JOptionPane.showMessageDialog(frame, "Вычисление окончено.\n Абсолютный минимум:\ny = "
+                    + series1.getMinY()
+                    + "\nНайденный минимум: "
+                    + "\nx = " + (x)
+                    + "\ny = " + (x * Math.sin(x) + 2 * Math.cos(x)));
         }
     }
 

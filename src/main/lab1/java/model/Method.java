@@ -10,6 +10,13 @@ public abstract class Method {
 
     public abstract double calculate();
 
+    public double calculate(double left, double right, double preciseness) {
+        this.left = left;
+        this.right = right;
+        this.preciseness = preciseness;
+        return calculate();
+    }
+
     public double calculate(double left, double right) {
         this.left = left;
         this.right = right;

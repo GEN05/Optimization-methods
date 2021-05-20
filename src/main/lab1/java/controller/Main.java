@@ -1,6 +1,5 @@
-package Controller;
+package controller;
 
-import model.*;
 import view.Window;
 
 public class Main {
