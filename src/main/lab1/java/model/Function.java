@@ -10,8 +10,6 @@ public class Function {
         double result = x * Math.sin(x) + 2 * Math.cos(x);
 //        double result = -1 * Math.pow(x, Math.cos(x)) * Math.exp(Math.sin(x));
         toTable(++counter, left, right, x, result);
-//        leftArray.add(left);
-//        rightArray.add(-right);
         map.put(counter, new ChartIteration(left, right, x, result));
         return result;
     }

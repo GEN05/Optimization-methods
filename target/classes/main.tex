@@ -1,0 +1,145 @@
+%! suppress = Unicode
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage[russian]{babel}
+\usepackage{eucal}
+\usepackage{blindtext}
+\usepackage{fullpage}
+\usepackage{tikz-cd}
+\usepackage{centernot}
+\usepackage{polynom}
+\usepackage{tensor}
+\usepackage{mleftright}
+\usepackage{amssymb}
+\usepackage[left=3cm, top=2cm, right=2cm, bottom=20mm, nohead, nofoot]{geometry}
+\newcommand{\tle}{\trianglelefteq}
+\newcommand{\tl}{\triangleleft}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\C}{\mathbb{C}}
+
+
+\title{\textbf{Отчет по лабораторной работе \textnumero{1}}}
+
+\medskip
+
+\author{Гусаров Евгений, Шиманская Маргарита
+\\М3237}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+    \maketitle
+    \newpage
+
+
+    \section{Постановка задачи}\label{sec:постановка-задачи}
+    \Large\textit{Вариант \textnumero{3}}
+    \\
+    \\
+    \Large\textit{$f(x) = x \cdot \sin(x) + 2 \cdot \cos(x)$}
+    \\
+    \\
+    \Large{Найти минимум данной функции на отрезке $[-6; -4]$, реализовав алгоритмы одномерной минимизации функции:}
+    \begin{itemize}
+        \item {метод дихтомии}
+        \item {метод золотого сечения}
+        \item {метод Фиббоначи}
+        \item {метод парабол}
+        \item {комбинированный метод Брента}
+    \end{itemize}
+
+    \Large{Сравнить результат работы с аналитическим решением данной задачи, сделать выводы.}
+
+
+    \newpage
+
+
+    \section{Аналитическое решение}\label{sec:аналитическое-решение}
+    \begin{figure}[h]
+        \center{\includegraphics[scale=0.5]{graphic}}
+        \caption{График функции}
+        \label{fig:image}
+    \end{figure}
+    \\
+    \Large{$f(x) = x \cdot \sin(x) + 2 \cdot \cos(x)$}
+    \\
+    \Large{$f'(x) = x \cdot \cos(x)  + \sin(x) - 2 \cdot \sin(x)$}
+    \\
+    \Large{$f'(x) = 0$}
+    \qquad
+    \Large{$<=>$}
+    \qquad
+    \Large{$x \cdot \cos(x) - \sin(x) = 0$}
+    \\
+    \Large{$x = \tan(x)$}
+    \\
+    \Large{На данном отрезке один корень: $x_1 \approx -4.4934$}
+    \\
+    \Large{$f(x_1) \approx -4.8206$}
+    \\
+    \Large{Функция достигает минимума в этой точке. потому что на интервале $(x_1 - \epsilon ; x_1)$ функция убывает(производная < 0), а на $(x_1; x_1 + \epsilon )$ возрастает(производная > 0)}
+    \newpage
+
+
+    \section{Результаты исследований методов}\label{sec:результаты-исследований-методов}
+    \input{function-research-results.tex}
+
+
+    \section{Тестирование алгоритмов на многомодальной функции}\label{sec:тестирование-алгоритмов-на-многомодальной-функции}
+    {Приведённые алгоритмы работают при поиске минимума унимодальной функции.
+    Оценим результаты их работы на многомодальной функции, например, вида $f(x)=-x^{\cos(x)}\exp(\sin(x)$) на отрезке. \(x = \left[0, 20\right]\)}
+
+    \begin{figure}[h]
+        \center{\includegraphics[scale=0.5]{manyModalsGraphic}}
+        \caption{График функции}
+        \label{fig:image}
+    \end{figure}
+    \noindent
+    {Для теста был выбран $\varepsilon=0.00000001$.
+    Аналитическим решением получили точку минимума: $x \approx 19.1916598$.}
+
+    {Ниже приведены результаты работы алгоритмов на данной функции.}
+
+    \begin{table}[h!]
+        \begin{center}
+            \begin{tabular}{|c c c|}
+                \hline
+
+                {Метод}         & Число итераций & результат          \\
+                \hline
+                Дихотомия       & 60             & 12.964333547131023 \\
+                Золотое сечение & 46             & 12.964333604846322 \\
+                Фибоначчи       & 46             & 12.964333592016619 \\
+                Метод Парабол   & 17             & 6.82151365682379   \\
+                Метод Брента    & 14             & 12.964333590155599 \\
+                \hline
+            \end{tabular}
+        \end{center}\label{tab:table}
+    \end{table}
+
+    \noindent
+    {Как видно все методы нашли точки локального минимума $x \approx 6.82151365682379$ и $x \approx 12.964333590155599$.
+    Ни один метод не смог найти точку глобального минимума.
+    Эти результаты показывают, что данные методы не могут гарантировать корректный результат на многомодальных функциях.}
+
+
+    \section{Результаты исследования}\label{sec:результаты-исследования}
+    {В ходе работы нами были реализованы и протестированны пять алгоритмов поиска минимума унимодальной функции.
+    Метод Брента оказался наиболее устойчивым.
+    Также методу Брента потребовалось меньше всего итераций и вычислений функции для нахождения ответа.
+
+    Кроме того мы протестировали алгоритмы на многомодальных функциях.
+    Все методы выдали точки локальных минимумов, а не глобального.
+    Исходя из этого можно понять, что лучше не стоит применять данные алгоритмы для поиска минимума в многомодальных функциях.}
+
+\end{document}
