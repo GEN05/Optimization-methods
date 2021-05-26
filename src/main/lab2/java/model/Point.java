@@ -33,7 +33,7 @@ public class Point {
      */
     @Override
     public String toString() {
-        return Arrays.stream(coordinates).mapToObj(coordinate -> coordinate + " ").collect(Collectors.joining("", "Point: {\n\t", "\n}"));
+        return Arrays.stream(coordinates).mapToObj(coordinate -> coordinate + " ").collect(Collectors.joining("", "Point: {", "}"));
     }
 
     public double[] getCoordinates() {

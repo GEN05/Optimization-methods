@@ -6,29 +6,29 @@ public class GradientDescent extends Method {
     private final double C;
     private final Point point;
 
-    public GradientDescent(double[][] a, double[] b, double c, Point point) {
-        A = a;
-        B = b;
-        C = c;
+    public GradientDescent(double[][] A, double[] B, double C, Point point) {
+        this.A = A;
+        this.B = B;
+        this.C = C;
         this.point = point;
     }
 
     @Override
     public Point calculate() {
-        Point cur = point, gradient;
-        double curValue = Function.calculate(A, B, C, cur);
+        Point current = point, gradient;
+        double currentValue = Function.calculate(A, B, C, current);
         double lambda = 0.01;
         while (true) {
-            gradient = Function.gradient(A, B, cur);
+            gradient = Function.gradient(A, B, current);
             if (module(gradient) < preciseness) {
-                return cur;
+                return current;
             }
             while (true) {
-                Point next = calculateNewPoint(cur, lambda, gradient);
+                Point next = calculateNewPoint(current, lambda, gradient);
                 double nextValue = Function.calculate(A, B, C, next);
-                if (nextValue < curValue) {
-                    cur = next;
-                    curValue = nextValue;
+                if (nextValue < currentValue) {
+                    current = next;
+                    currentValue = nextValue;
                     break;
                 } else {
                     lambda = lambda / 2;
