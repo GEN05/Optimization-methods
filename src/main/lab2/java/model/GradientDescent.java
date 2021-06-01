@@ -1,37 +1,34 @@
 package model;
 
 public class GradientDescent extends Method {
-    private final double[][] A;
-    private final double[] B;
-    private final double C;
-    private final Point point;
-
     public GradientDescent(double[][] A, double[] B, double C, Point point) {
         this.A = A;
         this.B = B;
         this.C = C;
         this.point = point;
+        this.counter = 0L;
     }
 
     @Override
-    public Point calculate() {
+    public Point calculate() throws Exception {
         Point current = point, gradient;
         double currentValue = Function.calculate(A, B, C, current);
-        double lambda = 0.01;
+        double λ = 0.01D;
         while (true) {
             gradient = Function.gradient(A, B, current);
             if (module(gradient) < preciseness) {
                 return current;
             }
             while (true) {
-                Point next = calculateNewPoint(current, lambda, gradient);
+                checkLimit();
+                Point next = calculateNewPoint(current, λ, gradient);
                 double nextValue = Function.calculate(A, B, C, next);
                 if (nextValue < currentValue) {
                     current = next;
                     currentValue = nextValue;
                     break;
                 } else {
-                    lambda = lambda / 2;
+                    λ = λ / 2D;
                 }
             }
         }

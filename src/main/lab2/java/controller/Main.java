@@ -1,9 +1,8 @@
 package controller;
 
-import model.GradientDescent;
-import model.Methods;
-import model.Point;
-import model.SteepestDescent;
+import model.*;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,6 +10,12 @@ public class Main {
     }
 
     public void run() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("""
+                Выберите интересующий вас метод:
+                1: Метод градиентного спуска
+                2: Метод наискорейшего спуска
+                3: Метод сопряжённых градиентов""");
         double[][] A = new double[][]{
                 {8, 6},
                 {6, 8}
@@ -18,17 +23,50 @@ public class Main {
         double[] B = new double[]{8, 10};
         double C = 1;
         Point point = new Point(1, -1);
-        GradientDescent gradientDescent = new GradientDescent(A, B, C, point);
-        System.out.println(gradientDescent.calculate());
-        SteepestDescent steepestDescent = new SteepestDescent(A, B, C, point, Methods.parabola);
-        System.out.println(steepestDescent.calculate());
-        steepestDescent = new SteepestDescent(A, B, C, point, Methods.dichotomy);
-        System.out.println(steepestDescent.calculate());
-        steepestDescent = new SteepestDescent(A, B, C, point, Methods.fibonacci);
-        System.out.println(steepestDescent.calculate());
-        steepestDescent = new SteepestDescent(A, B, C, point, Methods.goldenRatio);
-        System.out.println(steepestDescent.calculate());
-        steepestDescent = new SteepestDescent(A, B, C, point, Methods.brent);
-        System.out.println(steepestDescent.calculate());
+        short mode = scanner.nextShort();
+        short unaryMode = 0;
+        if (mode == 2) {
+            System.out.println("""
+                    Выберите метод одномерного поиска
+                    1: Метод парабол
+                    2: Метод дихотомии
+                    3: Метод Фибоначчи
+                    4: Метод золотого сечения
+                    5: Комбинированный метод Брента
+                    """);
+            unaryMode = scanner.nextShort();
+        }
+        Method method = null;
+        switch (mode) {
+            case 1:
+                method = new GradientDescent(A, B, C, point);
+                break;
+            case 2:
+                switch (unaryMode) {
+                    case 1 -> method = new SteepestDescent(A, B, C, point, Methods.parabola);
+                    case 2 -> method = new SteepestDescent(A, B, C, point, Methods.dichotomy);
+                    case 3 -> method = new SteepestDescent(A, B, C, point, Methods.fibonacci);
+                    case 4 -> method = new SteepestDescent(A, B, C, point, Methods.goldenRatio);
+                    case 5 -> method = new SteepestDescent(A, B, C, point, Methods.brent);
+                    default -> System.err.println("Wrong unary mode");
+                }
+                break;
+            case 3:
+                method = new ConjugateGradient(A, B, point);
+                break;
+        }
+        if (method == null) {
+            return;
+        }
+        write(method);
+    }
+
+    private void write(Method method) {
+        try {
+            System.out.println(method.calculate());
+        } catch (Exception e) {
+            System.err.println(e.getLocalizedMessage());
+        }
+        method.writeCounter();
     }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Function {
@@ -13,8 +14,12 @@ public class Function {
         return new Point(add(multiply(point.getCoordinates(), A), B));
     }
 
-    private static double multiply(double[] a, double[] b) {
+    public static double multiply(double[] a, double[] b) {
         return IntStream.range(0, a.length).mapToDouble(i -> a[i] * b[i]).sum();
+    }
+
+    public static double[] multiply(double[] a, double b) {
+        return Arrays.stream(a).map(v -> v * b).toArray();
     }
 
     public static double[] multiply(double[] a, double[][] b) {

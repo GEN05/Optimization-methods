@@ -4,17 +4,35 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public abstract class Method {
-    double preciseness = 0.01;
+    protected double preciseness = 1E-18;
+    protected double[][] A;
+    protected double[] B;
+    protected double C;
+    protected Point point;
+    protected Methods methods;
+    protected long counter;
+    protected int limit = 50000;
 
-    public abstract Point calculate();
+    public abstract Point calculate() throws Exception;
 
-    public Point calculateNewPoint(Point previous, double lambda, Point gradient) {
-        return new Point(IntStream
-                .range(0, previous.getCoordinates().length)
-                .mapToDouble(i -> previous.getCoordinates()[i] - lambda * gradient.getCoordinates()[i]).toArray());
+    public void writeCounter() {
+        System.out.println("Количество итераций: " + counter);
     }
 
-    public double module(Point point) {
+    protected Point calculateNewPoint(Point previous, double λ, Point gradient) {
+        return new Point(IntStream
+                .range(0, previous.getCoordinates().length)
+                .mapToDouble(i -> previous.getCoordinates()[i] - λ * gradient.getCoordinates()[i]).toArray());
+    }
+
+    protected double module(Point point) {
         return Math.sqrt(Arrays.stream(point.getCoordinates()).map(x -> x * x).sum());
+    }
+
+    protected void checkLimit() throws Exception {
+        counter++;
+        if (counter >= limit) {
+            throw new Exception("Превышен лимит итераций");
+        }
     }
 }
