@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -62,11 +63,14 @@ public class Main {
     }
 
     private void write(Method method) {
+        Point answer = null;
         try {
-            System.out.println(method.calculate());
+            answer = method.calculate();
+            System.out.println(answer);
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
         }
         method.writeCounter();
+        System.out.println("F(Point) = " + Function.function(Objects.requireNonNull(answer)));
     }
 }

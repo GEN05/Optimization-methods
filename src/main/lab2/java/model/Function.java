@@ -36,4 +36,10 @@ public class Function {
     public static double[] add(double[] a, double[] b) {
         return IntStream.range(0, a.length).mapToDouble(i -> a[i] + b[i]).toArray();
     }
+
+    public static double function(Point point) {
+        double x = point.getCoordinates()[0];
+        double y = point.getCoordinates()[1];
+        return 4 * x * x + 6 * x * y + 4 * y * y + 8 * x + 10 * y + 1;
+    }
 }

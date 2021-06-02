@@ -29,6 +29,7 @@ public class SteepestDescent extends Method {
             };
             current = calculateNewPoint(current, lambda, gradient);
         }
+        System.out.println("Модуль градиента: " + module(gradient));
         return current;
     }
 

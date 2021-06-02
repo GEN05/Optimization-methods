@@ -17,12 +17,14 @@ public class GradientDescent extends Method {
         while (true) {
             gradient = Function.gradient(A, B, current);
             if (module(gradient) < preciseness) {
+                System.out.println("Модуль градиента: " + module(gradient));
                 return current;
             }
             while (true) {
                 checkLimit();
                 Point next = calculateNewPoint(current, λ, gradient);
                 double nextValue = Function.calculate(A, B, C, next);
+                System.out.println(counter + " " + Math.abs(currentValue - nextValue));
                 if (nextValue < currentValue) {
                     current = next;
                     currentValue = nextValue;

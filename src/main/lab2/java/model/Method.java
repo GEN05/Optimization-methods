@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public abstract class Method {
-    protected double preciseness = 1E-18;
+    protected double preciseness = 0.01D;
     protected double[][] A;
     protected double[] B;
     protected double C;
