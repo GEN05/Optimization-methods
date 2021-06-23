@@ -18,11 +18,11 @@ public class Main {
                 2: Метод наискорейшего спуска
                 3: Метод сопряжённых градиентов""");
         double[][] A = new double[][]{
-                {8, 6},
-                {6, 8}
+                {6, -5},
+                {-5, 6}
         };
-        double[] B = new double[]{8, 10};
-        double C = 1;
+        double[] B = new double[]{-7, 2};
+        double C = -30;
         Point point = new Point(1, -1);
         short mode = scanner.nextShort();
         short unaryMode = 0;

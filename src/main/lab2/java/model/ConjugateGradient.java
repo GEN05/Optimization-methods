@@ -26,7 +26,7 @@ public class ConjugateGradient extends Method {
         Point point = new Point(multiply(gradient.getCoordinates(), -1D));
         Point nextX, nextGradient, nextPoint;
         double[] apK;
-        double α, β;
+        double α, β, currentValue = Function.calculate(A, B, C, x), nextValue;
         do {
             for (int i = 0; i < A.length && module(gradient) > preciseness; i++) {
                 checkLimit();
@@ -35,6 +35,8 @@ public class ConjugateGradient extends Method {
                         /
                         multiply(apK, point.getCoordinates());
                 nextX = calculateNewPoint(x, α, point);
+                nextValue = Function.calculate(A, B, C, nextX);
+                System.out.println(counter + " " + Math.abs(currentValue - nextValue));
                 nextGradient = calculateNewPoint(gradient, α, new Point(apK));
                 β = (i == 0) ? 0D : Math.pow(module(gradient(A, B, x)), 2D) /
                         Math.pow(module(gradient(A, B, x)), 2D);
@@ -48,6 +50,7 @@ public class ConjugateGradient extends Method {
                                 )
                         )
                 );
+                currentValue = nextValue;
                 x = nextX;
                 point = nextPoint;
                 gradient = nextGradient;

@@ -39,8 +39,7 @@ public class SteepestDescent extends Method {
         double f1 = simplify(x1, grad, p), f3 = simplify(x3, grad, p), fx;
         x2 = findPoint(x1, x3, f1, f3, grad, p);
         double f2 = simplify(x2, grad, p);
-        double EPS = 0.00001D;
-        while (Math.abs(x - prevX) > EPS) {
+        while (Math.abs(x - prevX) > preciseness) {
             prevX = x;
             x = 0.5D * (x1 + x2 - ((f2 - f1) * (x3 - x2) / (x2 - x1)
                     / ((f3 - f1) / (x3 - x1) - (f2 - f1) / (x2 - x1))));
@@ -95,7 +94,7 @@ public class SteepestDescent extends Method {
     //---D I T C H O T O M Y---\\
     public double getLambdaDichotomy(Point grad, Point p) {
         double a = 0D, b = 0.01D, x1, x2;
-        final double δ = preciseness / 4;
+        final double δ = preciseness;
         while (Math.abs(b - a) > preciseness) {
             x1 = (a + b) / 2D - δ;
             x2 = (a + b) / 2D + δ;
@@ -183,7 +182,7 @@ public class SteepestDescent extends Method {
         fx = fw = fv = simplify(x, grad, p);
         d = e = c - a;
         boolean isParabola;
-        double ε = 0.001D;
+        double ε = preciseness;
         while (d > ε) {
             isParabola = false;
             g = e;
