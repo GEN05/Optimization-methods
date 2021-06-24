@@ -6,7 +6,6 @@ import format.Vector;
 import java.util.stream.IntStream;
 
 public class Gauss extends Method {
-
     @Override
     public Vector<Double> solve(Matrix matrix) {
         int n = matrix.rowsCount(), m = matrix.columnsCount();
