@@ -1,17 +1,22 @@
 package methods;
 
+import format.Matrix;
+import format.Vector;
+
 import java.util.stream.IntStream;
 
-public class Gauss {
-    public double[] solve(double[][] matrix) {
-        int n = matrix.length, m = matrix.length + 1;
+public class Gauss extends Method {
+
+    @Override
+    public Vector<Double> solve(Matrix matrix) {
+        int n = matrix.rowsCount(), m = matrix.columnsCount();
 
         int[] realRows = IntStream.range(0, n).toArray();
 
         for (int row = 0; row < n; row++) {
             int sel = row;
             for (int i = row + 1; i < n; i++) {
-                if (Math.abs(matrix[realRows[row]][row]) > Math.abs(matrix[realRows[sel]][row])) {
+                if (Math.abs(matrix.get(realRows[row], row)) > Math.abs(matrix.get(realRows[sel], row))) {
                     sel = i;
                 }
             }
@@ -21,20 +26,20 @@ public class Gauss {
 
             double c;
             for (int i = row + 1; i < n; ++i) {
-                c = matrix[realRows[i]][row] / matrix[realRows[row]][row];
+                c = matrix.get(realRows[i], row) / matrix.get(realRows[row], row);
                 for (int j = row; j < m; ++j) {
-                    matrix[realRows[i]][j] -= matrix[realRows[row]][j] * c;
+                    matrix.set(realRows[i], j, matrix.get(realRows[i], j) - (matrix.get(realRows[row], j) * c));
                 }
             }
         }
-        double[] answer = new double[n];
+        Vector<Double> answer = new Vector<>(n);
         double sum;
         for (int i = n - 1; i >= 0; i--) {
             sum = 0;
             for (int j = n - 1; j > i; j--) {
-                sum += matrix[realRows[i]][j] * answer[j];
+                sum += matrix.get(realRows[i], j) * answer.get(j);
             }
-            answer[i] = (matrix[realRows[i]][n] - sum) / matrix[realRows[i]][i];
+            answer.set(i, (matrix.get(realRows[i], n) - sum) / matrix.get(realRows[i], i));
         }
         return answer;
     }

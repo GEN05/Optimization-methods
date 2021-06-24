@@ -8,19 +8,19 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ProfileMatrix {
-    private int[] profileInfo;
-    private double[] diagonal;
-    private double[] lowerTriangleElementsByLine;
-    private double[] lowerTriangleElementsByColumns;
-    private double[] rightSideVector;
+public class ProfileMatrix extends Matrix {
+    private Vector<Integer> profileInfo;
+    private Vector<Double> diagonal;
+    private Vector<Double> lowerTriangleElementsByLine;
+    private Vector<Double> lowerTriangleElementsByColumns;
+    private Vector<Double> rightSideVector;
     private BufferedReader reader;
 
     public ProfileMatrix(String directoryName) {
         directoryName = directoryName + File.separator;
         try {
             reader = getReader(directoryName, "profileInfo");
-            profileInfo = Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+            profileInfo = new Vector<>(Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).boxed());
 
             reader = getReader(directoryName, "diagonal");
             diagonal = read();
@@ -45,46 +45,79 @@ public class ProfileMatrix {
     }
 
     public int size() {
-        return diagonal.length;
+        return diagonal.size();
     }
 
-    public double getLUValue(int i, int j) {
-        boolean isUpperTriangle = false;
-        if (i == j) {
-            return diagonal[i];
-        } else if (j > i) {
-            isUpperTriangle = true;
-            int swap = j;
-            j = i;
-            i = swap;
-        }
-        int iStringProfile = profileInfo[i + 1] - profileInfo[i]; // profile of i-th string
-        int firstPosition = profileInfo[i] - 1; // position of first element of i-th string in al/au
-        int realPosition = i - iStringProfile;
-        if (j < realPosition) { // beginning zero
-            return 0d;
-        }
-        int position = firstPosition + j - realPosition;
-        return isUpperTriangle ? lowerTriangleElementsByColumns[position] : lowerTriangleElementsByLine[position];
-    }
-
-    public double[] getRightSideVector() {
+    public Vector<Double> getRightSideVector() {
         return rightSideVector;
     }
 
     public double getRightSideVectorValue(int index) {
-        return rightSideVector[index];
+        return rightSideVector.get(index);
     }
 
     public void setRightSideVectorValue(int index, double value) {
-        rightSideVector[index] = value;
+        rightSideVector.set(index, value);
     }
 
     private BufferedReader getReader(String directoryName, String diagonal) throws IOException {
         return Files.newBufferedReader(Path.of(directoryName + diagonal + ".txt"));
     }
 
-    private double[] read() throws IOException {
-        return Arrays.stream(reader.readLine().split(" ")).mapToDouble(Double::parseDouble).toArray();
+    private Vector<Double> read() throws IOException {
+        return new Vector<>(Arrays.stream(reader.readLine().split(" ")).mapToDouble(Double::parseDouble).boxed());
+    }
+
+    @Override
+    protected double getImpl(int i, int j) {
+        boolean isUpperTriangle = false;
+        if (i == j) {
+            return diagonal.get(i);
+        } else if (j > i) {
+            isUpperTriangle = true;
+            int swap = j;
+            j = i;
+            i = swap;
+        }
+        int realPosition = i - (profileInfo.get(i + 1) - profileInfo.get(i));
+        if (j < realPosition) { // beginning zero
+            return 0d;
+        }
+        int position = profileInfo.get(i) - 1 + j - realPosition;
+        return isUpperTriangle ? lowerTriangleElementsByColumns.get(position) : lowerTriangleElementsByLine.get(position);
+    }
+
+    @Override
+    protected void setImpl(int i, int j, double value) {
+        boolean isUpperTriangle = false;
+        if (i == j) {
+            diagonal.set(i, value);
+            return;
+        } else if (j > i) {
+            isUpperTriangle = true;
+            int swap = j;
+            j = i;
+            i = swap;
+        }
+        int realPosition = i - (profileInfo.get(i + 1) - profileInfo.get(i));
+        if (j < realPosition) { // beginning zero
+            return;
+        }
+        int position = profileInfo.get(i) - 1 + j - realPosition;
+        if (isUpperTriangle) {
+            lowerTriangleElementsByColumns.set(position, value);
+        } else {
+            lowerTriangleElementsByLine.set(position, value);
+        }
+    }
+
+    @Override
+    public int rowsCount() {
+        return diagonal.size();
+    }
+
+    @Override
+    public int columnsCount() {
+        return diagonal.size();
     }
 }
