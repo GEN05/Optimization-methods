@@ -1,5 +1,6 @@
 package methods;
 
+import format.CommonMatrix;
 import format.Matrix;
 import format.Vector;
 
@@ -7,7 +8,8 @@ import java.util.stream.IntStream;
 
 public class Gauss extends Method {
     @Override
-    public Vector<Double> solve(Matrix matrix) {
+    public Vector<Double> solve(Matrix matrix1) {
+        CommonMatrix matrix = (CommonMatrix) matrix1;
         int n = matrix.rowsCount(), m = matrix.columnsCount();
 
         int[] realRows = IntStream.range(0, n).toArray();

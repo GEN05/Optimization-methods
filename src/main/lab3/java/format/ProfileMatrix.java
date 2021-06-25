@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class ProfileMatrix extends Matrix {
     private Vector<Integer> profileInfo;
@@ -108,6 +109,27 @@ public class ProfileMatrix extends Matrix {
             lowerTriangleElementsByColumns.set(position, value);
         } else {
             lowerTriangleElementsByLine.set(position, value);
+        }
+    }
+
+    public void decompositionUL() {
+        int n = diagonal.size();
+        IntStream.range(1, n).forEach(j -> set(j, 0, get(j, 0) / get(0, 0)));
+        for (int i = 1; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                double sum = 0;
+                for (int k = 0; k < i; k++) {
+                    sum += get(i, k) * get(k, j);
+                }
+                set(i, j, get(i, j) - sum);
+            }
+            for (int j = i + 1; j < n; j++) {
+                double sum = 0;
+                for (int k = 0; k < i; k++) {
+                    sum += get(j, k) * get(k, i);
+                }
+                set(j, i, (get(j, i) - sum) / get(i, i));
+            }
         }
     }
 

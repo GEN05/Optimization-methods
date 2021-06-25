@@ -3,6 +3,7 @@ package generator;
 import format.Vector;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class DiagonalDominanceMatrixGenerator extends Generator {
     public DiagonalDominanceMatrixGenerator(String dir, int n, int k) {
@@ -34,7 +35,27 @@ public class DiagonalDominanceMatrixGenerator extends Generator {
                 pos++;
             }
         }
-
         write();
+    }
+
+    private Vector<Double>[] generateDiagonallyDominantMatrix() {
+        Vector<Double>[] matrix = new Vector[n];
+        Arrays.setAll(matrix, i -> new Vector<>(n));
+        for (int i = 1; i < n; i++) {
+            int posOfFirstNotZero = random.nextInt(i);
+
+            matrix[i].set(posOfFirstNotZero, 0D);
+            matrix[posOfFirstNotZero].set(i, 0D);
+            while (matrix[i].get(posOfFirstNotZero) == 0 || matrix[posOfFirstNotZero].get(i) == 0) {
+                matrix[i].set(posOfFirstNotZero, (double) -random.nextInt(5));
+                matrix[posOfFirstNotZero].set(i, (double) -random.nextInt(5));
+            }
+
+            for (int j = posOfFirstNotZero + 1; j <= i; j++) {
+                matrix[i].set(j, (double) -random.nextInt(5));
+                matrix[j].set(i, (double) -random.nextInt(5));
+            }
+        }
+        return matrix;
     }
 }
