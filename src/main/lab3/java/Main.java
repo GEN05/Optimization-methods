@@ -15,8 +15,8 @@ public class Main {
         // Тестирование матриц с диагональным преобладанием
         for (int k = 0; k < 10; k++) {
             for (int n = 10; n <= 1000; n *= 10) {
-                new DiagonalDominanceMatrixGenerator("test", n, k);
-                ProfileMatrix matrixProfile = new ProfileMatrix("test");
+                new DiagonalDominanceMatrixGenerator("test1", n, k);
+                ProfileMatrix matrixProfile = new ProfileMatrix("test1");
                 matrixProfile.decompositionUL();
                 Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
                 System.out.println(n + " & " + k + " & " + norm(solution) + " \\\\");
@@ -25,22 +25,22 @@ public class Main {
 
         // Тестирование матриц Гильберта
         for (int n = 2; n < 10; n++) {
-            new GilbertMatrixGenerator("test", n);
-            ProfileMatrix matrixProfile = new ProfileMatrix("test");
+            new GilbertMatrixGenerator("test2", n);
+            ProfileMatrix matrixProfile = new ProfileMatrix("test2");
             matrixProfile.decompositionUL();
             Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
             System.out.println(n + " & " + norm(solution));
         }
         for (int n = 10; n < 20; n += 2) {
-            new GilbertMatrixGenerator("test", n);
-            ProfileMatrix matrixProfile = new ProfileMatrix("test");
+            new GilbertMatrixGenerator("test3", n);
+            ProfileMatrix matrixProfile = new ProfileMatrix("test3");
             matrixProfile.decompositionUL();
             Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
             System.out.println(n + " & " + norm(solution));
         }
         for (int n = 20; n <= 100; n += 10) {
-            new GilbertMatrixGenerator("test", n);
-            ProfileMatrix matrixProfile = new ProfileMatrix("test");
+            new GilbertMatrixGenerator("test4", n);
+            ProfileMatrix matrixProfile = new ProfileMatrix("test4");
             matrixProfile.decompositionUL();
             Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
             System.out.println(n + " & " + norm(solution));
@@ -64,8 +64,8 @@ public class Main {
                 }
             }
 
-            new DenseProfileFormatMatrixGenerator("test", m);
-            ProfileMatrix matrixProfile = new ProfileMatrix("test");
+            new DenseProfileFormatMatrixGenerator("test5", m);
+            ProfileMatrix matrixProfile = new ProfileMatrix("test5");
             matrixProfile.decompositionUL();
             Vector<Double> LUSolution = new LUDecomposition().solve(matrixProfile);
             Matrix matrix = new CommonMatrix(m);

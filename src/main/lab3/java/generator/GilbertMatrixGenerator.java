@@ -33,7 +33,8 @@ public class GilbertMatrixGenerator extends Generator {
         }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                matrix[j].set(i, (double) (1 / (i + j + 1)));
+                double temp = i + j + 1;
+                matrix[j].set(i, 1 / temp);
                 matrix[i].set(j, matrix[j].get(i));
             }
         }

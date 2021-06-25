@@ -21,7 +21,9 @@ public class LUDecomposition extends Method {
             for (int j = n - 1; j > i; j--) {
                 cur += matrix.get(i, j) * matrix.getRightSideVectorValue(j);
             }
-            matrix.setRightSideVectorValue(i, (matrix.getRightSideVectorValue(i) - cur) / matrix.get(i, i));
+            matrix.setRightSideVectorValue(i,
+                    (matrix.getRightSideVectorValue(i) - cur)
+                            / matrix.get(i, i));
         }
         return matrix.getRightSideVector();
     }

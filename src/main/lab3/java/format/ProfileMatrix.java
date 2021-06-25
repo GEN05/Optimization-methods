@@ -142,4 +142,16 @@ public class ProfileMatrix extends Matrix {
     public int columnsCount() {
         return diagonal.size();
     }
+
+    @Override
+    public String toString() {
+        return "ProfileMatrix{" +
+                "profileInfo=" + profileInfo +
+                ", diagonal=" + diagonal +
+                ", lowerTriangleElementsByLine=" + lowerTriangleElementsByLine +
+                ", lowerTriangleElementsByColumns=" + lowerTriangleElementsByColumns +
+                ", rightSideVector=" + rightSideVector +
+                ", reader=" + reader +
+                '}';
+    }
 }

@@ -15,12 +15,12 @@ public class Vector<T> {
 
     public Vector(int size) {
         Object[] objects = new Object[size];
-        Arrays.fill(objects, 0);
+        Arrays.fill(objects, 0D);
         values = (T[]) objects;
     }
 
     public Vector(Stream<T> values) {
-        this((T) values.toArray());
+        this.values = (T[]) values.toArray();
     }
 
 
