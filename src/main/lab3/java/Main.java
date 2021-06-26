@@ -9,6 +9,7 @@ import methods.Gauss;
 import methods.LUDecomposition;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,14 +32,14 @@ public class Main {
             Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
             System.out.println(n + " & " + norm(solution));
         }
-        for (int n = 10; n < 20; n += 2) {
+        for (int n = 10; n < 30; n += 2) {
             new GilbertMatrixGenerator("test3", n);
             ProfileMatrix matrixProfile = new ProfileMatrix("test3");
             matrixProfile.decompositionUL();
             Vector<Double> solution = new LUDecomposition().solve(matrixProfile);
             System.out.println(n + " & " + norm(solution));
         }
-        for (int n = 20; n <= 100; n += 10) {
+        for (int n = 30; n <= 100; n += 10) {
             new GilbertMatrixGenerator("test4", n);
             ProfileMatrix matrixProfile = new ProfileMatrix("test4");
             matrixProfile.decompositionUL();
@@ -47,8 +48,8 @@ public class Main {
         }
 
         // Сравнение метода Гаусса по точности получаемого решения и по количеству действий с реализованным прямым методом LU-разложения
-        Random random = new Random();
-        for (int n = 970; n <= 10000; n += 500) {
+        Random random = new Random(System.currentTimeMillis());
+        for (int n = 990; n <= 10000; n += 1000) {
             Vector<Double>[] m = new Vector[n];
             for (int i = 0; i < m.length; i++) {
                 m[i] = new Vector<>(n + 1);
@@ -76,16 +77,7 @@ public class Main {
     }
 
     private static String norm(final Vector<Double> solution) {
-        double sumSub = 0;
-        double sumX = 0;
-        for (int i = 0; i <= solution.size(); i++) {
-            if (i != solution.size()) {
-                sumSub += (solution.get(i) - (i + 1)) * (solution.get(i) - (i + 1));
-            }
-            if (i != 0) {
-                sumX += i * i;
-            }
-        }
-        return String.format("%.20f", Math.sqrt(sumSub) / Math.sqrt(sumX)) + " ";
+        double sumSub = IntStream.rangeClosed(0, solution.size()).filter(i -> i != solution.size()).mapToDouble(i -> (solution.get(i) - (i + 1)) * (solution.get(i) - (i + 1))).sum();
+        return String.format("%.20f", Math.sqrt(sumSub)) + " ";
     }
 }
