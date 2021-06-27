@@ -4,16 +4,18 @@ import methods.Method;
 import util.Functions;
 import util.Vector;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.stream.IntStream;
 
 public class Powell extends Method {
     @Override
-    public Vector calculate(Functions functions, Vector start, double eps, boolean log) {
+    public Vector calculate(Functions functions, Vector start, double eps, boolean log, BufferedWriter writer) throws IOException {
         Vector x = new Vector(start), w = Vector.negative(new Vector(functions.gradientValue(x))), p, nextX, nextW;
         int n = w.getCoordinates().length;
         double[][] H = identityMatrix(n);
         if (log) {
-            System.out.println(x);
+            writer.write(x + System.lineSeparator());
         }
         while (norm(w) >= eps && counter < limit) {
             counter++;
@@ -24,7 +26,7 @@ public class Powell extends Method {
             x = nextX;
             w = nextW;
             if (log) {
-                System.out.println(x);
+                writer.write(x + System.lineSeparator());
             }
         }
         return x;

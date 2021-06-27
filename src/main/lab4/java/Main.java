@@ -7,6 +7,9 @@ import methods.quasinewton.Powell;
 import util.Functions;
 import util.Vector;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -16,30 +19,34 @@ import static java.lang.Math.sqrt;
 public class Main {
     public static void main(String[] args) {
         Data data;
-        for (int i = 1; i <= 7; i++) {
-            data = getData(i);
-            System.out.println("=================================================");
-            double eps = 1E-5D;
-            Method method;
+        try (BufferedWriter out = new BufferedWriter(new FileWriter("lab4.txt"))) {
+            for (int i = 1; i <= 7; i++) {
+                data = getData(i);
+//            System.out.println("=================================================");
+                double eps = 1E-5D;
+                Method method;
 
-            method = new Newton();
-            write(data, eps, method);
+                method = new Newton();
+                write(data, eps, method, out);
 
-            data = getData(i);
-            method = new OneDimensionalSearchNewton();
-            write(data, eps, method);
+                data = getData(i);
+                method = new OneDimensionalSearchNewton();
+                write(data, eps, method, out);
 
-            data = getData(i);
-            method = new NewtonDirectionDescent();
-            write(data, eps, method);
+                data = getData(i);
+                method = new NewtonDirectionDescent();
+                write(data, eps, method, out);
 
-            data = getData(i);
-            method = new BroydenFletcherSheno();
-            write(data, eps, method);
+                data = getData(i);
+                method = new BroydenFletcherSheno();
+                write(data, eps, method, out);
 
-            data = getData(i);
-            method = new Powell();
-            write(data, eps, method);
+                data = getData(i);
+                method = new Powell();
+                write(data, eps, method, out);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -154,13 +161,14 @@ public class Main {
         return new Data(new Functions(function, gradient, hessian), initialApproximation);
     }
 
-    private static void write(Data data, double eps, Method method) {
+    private static void write(Data data, double eps, Method method, BufferedWriter writer) throws IOException {
         Vector res;
-        System.out.println(method.getClass().getSimpleName());
-        System.out.printf("Начальное приближение: %s%n", data.vector);
-        res = method.calculate(data.function, data.vector, eps, false);
-        System.out.printf("Ответ: %s%n", res);
-        System.out.printf("Количество итераций: %s\n%n", method.getCounter());
+
+        writer.write(method.getClass().getSimpleName());
+        writer.write("Начальное приближение: " + data.vector + System.lineSeparator());
+        res = method.calculate(data.function, data.vector, eps, true, writer);
+        writer.write("Ответ: " + res + System.lineSeparator());
+        writer.write("Количество итераций: " + method.getCounter() + System.lineSeparator());
     }
 
     private record Data(Functions function, Vector vector) {

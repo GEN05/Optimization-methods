@@ -4,14 +4,16 @@ import methods.Method;
 import util.Functions;
 import util.Vector;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class NewtonDirectionDescent extends Method {
     @Override
-    public Vector calculate(Functions functions, Vector start, double eps, boolean log) {
+    public Vector calculate(Functions functions, Vector start, double eps, boolean log, BufferedWriter writer) throws IOException {
         Vector x = new Vector(start);
         if (log) {
-            System.out.println(x);
+            writer.write(x + System.lineSeparator());
         }
         Vector d;
         Vector s;
@@ -22,7 +24,7 @@ public class NewtonDirectionDescent extends Method {
             d = Vector.multiply(s, g) < 0 ? s : Vector.negative(g);
             s = getVector(functions, x, d);
             if (log) {
-                System.out.println(x);
+                writer.write(x + System.lineSeparator());
             }
         } while (norm(s) >= eps && counter < limit);
         return x;

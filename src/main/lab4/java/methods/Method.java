@@ -3,6 +3,8 @@ package methods;
 import util.Functions;
 import util.Vector;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -11,7 +13,7 @@ public abstract class Method {
     public final int limit = 900000;
     public int counter = 0;
 
-    public abstract Vector calculate(Functions functions, Vector start, double eps, boolean log);
+    public abstract Vector calculate(Functions functions, Vector start, double eps, boolean log, BufferedWriter writer) throws IOException;
 
     public int getCounter() {
         return counter;
