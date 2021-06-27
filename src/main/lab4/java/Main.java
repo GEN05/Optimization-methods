@@ -11,11 +11,12 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public class Main {
     public static void main(String[] args) {
         Data data;
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 6; i <= 7; i++) {
             data = getData(i);
             System.out.println("=================================================");
             double eps = 1E-7D;
@@ -122,6 +123,28 @@ public class Main {
                     };
                 };
                 initialApproximation = new Vector(1, 1);
+            }
+            case 6 -> {     //  5x^2+2xy +4y^2-3x-8y
+                function = x -> (5 * pow(x.get(0), 2) + 2 * x.get(0) * x.get(1) + 4 * pow(x.get(1), 2) - 3 * x.get(0) - 8 * x.get(1));
+                gradient = x -> new double[]{
+                        (10 * x.get(0) + 2 * x.get(1) - 3),
+                        (2 * x.get(0) + 8 * x.get(1) - 8)};
+                hessian = x -> new double[][]{
+                        new double[]{10, 2},
+                        new double[]{2, 8}
+                };
+                initialApproximation = new Vector(7, -9);
+            }
+            case 7 -> {     //  -x*sqrt(y)+7*y^2+2x+13y
+                function = x -> (-x.get(0) * sqrt(x.get(1)) + 7 * pow(x.get(1), 2) + 2 * x.get(0) + 13 * x.get(1));
+                gradient = x -> new double[]{
+                        -Math.sqrt(x.get(1)) + 2,
+                        -x.get(0) / (2 * Math.sqrt(x.get(1))) + 14 * x.get(1) + 13};
+                hessian = x -> new double[][]{
+                        new double[]{0, -1 / (2 * Math.sqrt(x.get(1)))},
+                        new double[]{-1 / (2 * Math.sqrt(x.get(1))), x.get(0) / (4 * x.get(1) * Math.sqrt(x.get(1))) + 14}
+                };
+                initialApproximation = new Vector(3, -2);
             }
         }
         return new Data(new Functions(function, gradient, hessian), initialApproximation);
