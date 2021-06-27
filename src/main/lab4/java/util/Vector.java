@@ -118,6 +118,6 @@ public class Vector {
 
     @Override
     public String toString() {
-        return Arrays.stream(coordinates).mapToObj(coordinate -> String.format("%.20f", coordinate) + " ").collect(Collectors.joining("", "Point: {", "}"));
+        return Arrays.stream(coordinates).mapToObj(coordinate -> String.format("%.20f", coordinate) + " ").collect(Collectors.joining("", "Vector: {", "}"));
     }
 }

@@ -8,7 +8,14 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public abstract class Method {
-    public abstract Vector calculate(Functions functions, Vector start, double eps);
+    public final int limit = 100000;
+    public int counter = 0;
+
+    public abstract Vector calculate(Functions functions, Vector start, double eps, boolean log);
+
+    public int getCounter() {
+        return counter;
+    }
 
     protected Vector slay(double[][] hessian, double[] gradient) {
         int n = gradient.length;

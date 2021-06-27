@@ -8,19 +8,23 @@ import java.util.Arrays;
 
 public class NewtonDirectionDescent extends Method {
     @Override
-    public Vector calculate(Functions functions, Vector start, double eps) {
+    public Vector calculate(Functions functions, Vector start, double eps, boolean log) {
         Vector x = new Vector(start);
-        System.out.println(x);
+        if (log) {
+            System.out.println(x);
+        }
         Vector d;
         Vector s;
-        System.out.println(x);
         do {
+            counter++;
             Vector g = new Vector(functions.gradientValue(x));
             s = slay(functions.hessianValue(x), Arrays.stream(new Vector(g.getCoordinates()).getCoordinates()).map(y -> -y).toArray());
             d = Vector.multiply(s, g) < 0 ? s : Vector.negative(g);
             s = getVector(functions, x, d);
-            System.out.println(x);
-        } while (norm(s) >= eps);
+            if (log) {
+                System.out.println(x);
+            }
+        } while (norm(s) >= eps && counter < limit);
         return x;
     }
 

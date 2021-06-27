@@ -8,13 +8,16 @@ import java.util.stream.IntStream;
 
 public class BroydenFletcherSheno extends Method {
     @Override
-    public Vector calculate(Functions functions, Vector start, double eps) {
+    public Vector calculate(Functions functions, Vector start, double eps, boolean log) {
         Vector x = new Vector(start), p, d, nextX, nextGrad, gradient = new Vector(functions.gradientValue(x));
         int n = gradient.getCoordinates().length;
         double[][] h = identityMatrix(n);
-        System.out.println(x);
+        if (log) {
+            System.out.println(x);
+        }
         double alpha;
-        while (norm(gradient) >= eps) {
+        while (norm(gradient) >= eps && counter < limit) {
+            counter++;
             p = Vector.negative(Vector.multiply(h, gradient));
             alpha = getLambda(functions, x, p);
             d = Vector.multiply(p, alpha);
@@ -23,7 +26,9 @@ public class BroydenFletcherSheno extends Method {
             h = getNextH(h, Vector.minus(nextX, x), Vector.minus(nextGrad, gradient));
             x = nextX;
             gradient = nextGrad;
-            System.out.println(x);
+            if (log) {
+                System.out.println(x);
+            }
         }
         return x;
     }

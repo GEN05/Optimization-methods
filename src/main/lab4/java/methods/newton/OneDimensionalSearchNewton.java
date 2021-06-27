@@ -8,16 +8,21 @@ import java.util.Arrays;
 
 public class OneDimensionalSearchNewton extends Method {
     @Override
-    public Vector calculate(Functions functions, Vector start, double eps) {
+    public Vector calculate(Functions functions, Vector start, double eps, boolean log) {
         Vector d, s, x = new Vector(start);
         do {
-            System.out.println(x);
+            counter++;
+            if (log) {
+                System.out.println(x);
+            }
             d = slay(functions.hessianValue(x), Arrays.stream(functions.gradientValue(x)).map(y -> -y).toArray());
             double r = getLambda(functions, x, d);
-            System.out.println("Одномерное значение " + r);
+            if (log) {
+                System.out.println("Одномерное значение " + r);
+            }
             s = Vector.multiply(d, r);
             x.plus(s);
-        } while (norm(s) >= eps);
+        } while (norm(s) >= eps && counter < limit);
         return x;
     }
 }
