@@ -16,9 +16,8 @@ public class Vector {
         System.arraycopy(vector.coordinates, 0, coordinates, 0, vector.coordinates.length);
     }
 
-    @Override
-    public String toString() {
-        return Arrays.stream(coordinates).mapToObj(coordinate -> coordinate + " ").collect(Collectors.joining("", "Point: {", "}"));
+    public static Vector negative(Vector vector) {
+        return new Vector(Arrays.stream(vector.coordinates).map(a -> -a).toArray());
     }
 
     public double[] getCoordinates() {
@@ -35,6 +34,15 @@ public class Vector {
 
     public void plus(final Vector vector) {
         IntStream.range(0, vector.coordinates.length).forEach(i -> coordinates[i] += vector.coordinates[i]);
+    }
+
+    public static double multiply(Vector x, Vector y) {
+        return IntStream.range(0, x.getCoordinates().length).mapToDouble(i -> x.get(i) * y.get(i)).sum();
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.stream(coordinates).mapToObj(coordinate -> String.format("%.20f", coordinate) + " ").collect(Collectors.joining("", "Point: {", "}"));
     }
 
     public static Vector multiplyOnNumber(Vector vector, double scalar) {

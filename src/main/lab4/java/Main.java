@@ -1,5 +1,7 @@
 import methods.Method;
 import methods.Newton;
+import methods.NewtonDirectionDescent;
+import methods.OneDimensionalSearchNewton;
 import util.Functions;
 import util.Vector;
 
@@ -16,11 +18,26 @@ public class Main {
                 new double[]{-1.2, 2.0}
         };
         Data data = new Data(new Functions(f, gradient, hessian), new Vector(4, 1));
+
+        double eps = 1E-9D;
         Method method;
-        System.out.println("начальное приближение: " + data.vector.toString());
+
         method = new Newton();
-        Vector res = method.calculate(data.function, data.vector, 0.000001);
+        write(data, eps, method);
+
+        method = new OneDimensionalSearchNewton();
+        write(data, eps, method);
+
+        method = new NewtonDirectionDescent();
+        write(data, eps, method);
+    }
+
+    private static void write(Data data, double eps, Method method) {
+        Vector res;
+        System.out.println("начальное приближение: " + data.vector);
+        res = method.calculate(data.function, data.vector, eps);
         System.out.println("ответ: " + res);
+        System.out.println();
     }
 
     private record Data(Functions function, Vector vector) {
