@@ -25,15 +25,19 @@ public class Main {
             method = new Newton();
             write(data, eps, method);
 
+            data = getData(i);
             method = new OneDimensionalSearchNewton();
             write(data, eps, method);
 
+            data = getData(i);
             method = new NewtonDirectionDescent();
             write(data, eps, method);
 
+            data = getData(i);
             method = new BroydenFletcherSheno();
             write(data, eps, method);
 
+            data = getData(i);
             method = new Powell();
             write(data, eps, method);
         }
