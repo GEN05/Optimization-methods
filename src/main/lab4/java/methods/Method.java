@@ -75,4 +75,10 @@ public abstract class Method {
         }
         return (x1 + x2) / 2;
     }
+
+    protected double[][] identityMatrix(int n) {
+        double[][] H = new double[n][n];
+        IntStream.range(0, H.length).forEach(i -> H[i][i] = 1);
+        return H;
+    }
 }

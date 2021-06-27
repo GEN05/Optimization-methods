@@ -3,9 +3,11 @@ import methods.newton.Newton;
 import methods.newton.NewtonDirectionDescent;
 import methods.newton.OneDimensionalSearchNewton;
 import methods.quasinewton.BroydenFletcherSheno;
+import methods.quasinewton.Powell;
 import util.Functions;
 import util.Vector;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public class Main {
@@ -34,16 +36,56 @@ public class Main {
 
         method = new BroydenFletcherSheno();
         write(data, eps, method);
+
+        method = new Powell();
+        write(data, eps, method);
     }
 
     private static void write(Data data, double eps, Method method) {
         Vector res;
-        System.out.println("начальное приближение: " + data.vector);
+        System.out.println(method.getClass().getSimpleName());
+        System.out.printf("Начальное приближение: %s%n", data.vector);
         res = method.calculate(data.function, data.vector, eps);
-        System.out.println("ответ: " + res);
-        System.out.println();
+        System.out.printf("Ответ: %s\n%n", res);
     }
 
-    private record Data(Functions function, Vector vector) {
+    private static final class Data {
+        private final Functions function;
+        private final Vector vector;
+
+        private Data(Functions function, Vector vector) {
+            this.function = function;
+            this.vector = vector;
+        }
+
+        public Functions function() {
+            return function;
+        }
+
+        public Vector vector() {
+            return vector;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null || obj.getClass() != this.getClass()) return false;
+            var that = (Data) obj;
+            return Objects.equals(this.function, that.function) &&
+                    Objects.equals(this.vector, that.vector);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(function, vector);
+        }
+
+        @Override
+        public String toString() {
+            return "Data[" +
+                    "function=" + function + ", " +
+                    "vector=" + vector + ']';
+        }
+
     }
 }

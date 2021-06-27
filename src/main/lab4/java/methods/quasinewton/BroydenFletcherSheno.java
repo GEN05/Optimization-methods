@@ -28,12 +28,6 @@ public class BroydenFletcherSheno extends Method {
         return x;
     }
 
-    private double[][] identityMatrix(int n) {
-        double[][] H = new double[n][n];
-        IntStream.range(0, H.length).forEach(i -> H[i][i] = 1);
-        return H;
-    }
-
     private double[][] getNextH(final double[][] H, final Vector vectorS, final Vector vectorY) {
         double[] s = vectorS.getCoordinates();
         double[] y = vectorY.getCoordinates();
