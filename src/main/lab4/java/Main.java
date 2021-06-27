@@ -19,7 +19,7 @@ public class Main {
         for (int i = 1; i <= 7; i++) {
             data = getData(i);
             System.out.println("=================================================");
-            double eps = 1E-7D;
+            double eps = 1E-5D;
             Method method;
 
             method = new Newton();

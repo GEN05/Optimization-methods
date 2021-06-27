@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public abstract class Method {
-    public final int limit = 100000;
+    public final int limit = 900000;
     public int counter = 0;
 
     public abstract Vector calculate(Functions functions, Vector start, double eps, boolean log);
