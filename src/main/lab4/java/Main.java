@@ -136,13 +136,13 @@ public class Main {
                 initialApproximation = new Vector(7, -9);
             }
             case 7 -> {     //  -x*sqrt(y)+7*x^2+2x+13y
-                function = x -> (-x.get(0) * sqrt(x.get(1)) + 7 * pow(x.get(0), 2) + 2 * x.get(0) + 13 * x.get(1));
+                function = x -> -x.get(1) * sqrt(x.get(0)) + 2 * pow(x.get(1), 2) + x.get(0) - 14 * x.get(1);
                 gradient = x -> new double[]{
-                        -Math.sqrt(x.get(1)) + 14 * x.get(0) + 2,
-                        -x.get(0) / (2 * Math.sqrt(x.get(1))) + 13};
+                        (-x.get(1) / (2 * sqrt(x.get(0)))) + 1,
+                        (-sqrt(x.get(0)) + 4 * x.get(1) - 14)};
                 hessian = x -> new double[][]{
-                        new double[]{14, -1 / (2 * Math.sqrt(x.get(1)))},
-                        new double[]{-1 / (2 * Math.sqrt(x.get(1))), x.get(0) / (4 * x.get(1) * Math.sqrt(x.get(1)))}
+                        new double[]{x.get(1) / (4 * x.get(0) * sqrt(x.get(0))), -1 / (2 * sqrt(x.get(0)))},
+                        new double[]{-1 / (2 * sqrt(x.get(0))), 4}
                 };
                 initialApproximation = new Vector(3, -2);
             }
