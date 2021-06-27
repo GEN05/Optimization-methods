@@ -29,11 +29,15 @@ public class Vector {
         return coordinates[index];
     }
 
-    public Vector plus(Vector vector1, Vector vector2) {
+    public static Vector plus(Vector vector1, Vector vector2) {
         return new Vector(IntStream.range(0, vector1.coordinates.length).mapToDouble(i -> vector1.coordinates[i] + vector2.coordinates[i]).toArray());
     }
 
     public void plus(final Vector vector) {
         IntStream.range(0, vector.coordinates.length).forEach(i -> coordinates[i] += vector.coordinates[i]);
+    }
+
+    public static Vector multiplyOnNumber(Vector vector, double scalar) {
+        return new Vector(Arrays.stream(vector.coordinates).map(coordinate -> coordinate * scalar).toArray());
     }
 }

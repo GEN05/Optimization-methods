@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public abstract class Method {
-    public abstract Vector calculate(Functions functions, Vector x0, double eps);
+    public abstract Vector calculate(Functions functions, Vector start, double eps);
 
     Vector slay(double[][] hessian, double[] gradient) {
         int n = gradient.length;
