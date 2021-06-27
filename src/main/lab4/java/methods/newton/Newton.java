@@ -1,5 +1,6 @@
-package methods;
+package methods.newton;
 
+import methods.Method;
 import util.Functions;
 import util.Vector;
 

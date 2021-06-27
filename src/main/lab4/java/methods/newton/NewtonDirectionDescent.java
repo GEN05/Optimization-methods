@@ -1,5 +1,6 @@
-package methods;
+package methods.newton;
 
+import methods.Method;
 import util.Functions;
 import util.Vector;
 
@@ -27,7 +28,7 @@ public class NewtonDirectionDescent extends Method {
         double r;
         Vector s;
         r = getLambda(functions, x, d);
-        s = Vector.multiplyOnNumber(d, r);
+        s = Vector.multiply(d, r);
         x.plus(s);
         return s;
     }

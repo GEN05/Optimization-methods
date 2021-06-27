@@ -1,7 +1,8 @@
 import methods.Method;
-import methods.Newton;
-import methods.NewtonDirectionDescent;
-import methods.OneDimensionalSearchNewton;
+import methods.newton.Newton;
+import methods.newton.NewtonDirectionDescent;
+import methods.newton.OneDimensionalSearchNewton;
+import methods.quasinewton.BroydenFletcherSheno;
 import util.Functions;
 import util.Vector;
 
@@ -29,6 +30,9 @@ public class Main {
         write(data, eps, method);
 
         method = new NewtonDirectionDescent();
+        write(data, eps, method);
+
+        method = new BroydenFletcherSheno();
         write(data, eps, method);
     }
 

@@ -1,5 +1,6 @@
-package methods;
+package methods.newton;
 
+import methods.Method;
 import util.Functions;
 import util.Vector;
 
@@ -14,7 +15,7 @@ public class OneDimensionalSearchNewton extends Method {
             d = slay(functions.hessianValue(x), Arrays.stream(functions.gradientValue(x)).map(y -> -y).toArray());
             double r = getLambda(functions, x, d);
             System.out.println("Одномерное значение " + r);
-            s = Vector.multiplyOnNumber(d, r);
+            s = Vector.multiply(d, r);
             x.plus(s);
         } while (norm(s) >= eps);
         return x;

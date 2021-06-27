@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 public abstract class Method {
     public abstract Vector calculate(Functions functions, Vector start, double eps);
 
-    Vector slay(double[][] hessian, double[] gradient) {
+    protected Vector slay(double[][] hessian, double[] gradient) {
         int n = gradient.length;
         int[] realRows = IntStream.range(0, n).toArray();
         for (int row = 0; row < n; row++) {
@@ -45,12 +45,12 @@ public abstract class Method {
         return new Vector(solution);
     }
 
-    double norm(final Vector p) {
+    protected double norm(final Vector p) {
         return Math.sqrt(Arrays.stream(p.getCoordinates()).map(x -> x * x).sum());
     }
 
-    double getLambda(final Functions functions, Vector x, Vector d) {
-        Function<Double, Double> f = l -> functions.functionValue(Vector.plus(x, Vector.multiplyOnNumber(d, l)));
+    protected double getLambda(final Functions functions, Vector x, Vector d) {
+        Function<Double, Double> f = l -> functions.functionValue(Vector.plus(x, Vector.multiply(d, l)));
         final double PHI = 2 - (1 + Math.sqrt(5)) / 2;
         final double EPS = 1E-5D;
         double a = -1000, b = 1000, x1, x2, f1, f2;
