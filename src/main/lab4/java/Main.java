@@ -16,7 +16,7 @@ import static java.lang.Math.sqrt;
 public class Main {
     public static void main(String[] args) {
         Data data;
-        for (int i = 6; i <= 7; i++) {
+        for (int i = 1; i <= 7; i++) {
             data = getData(i);
             System.out.println("=================================================");
             double eps = 1E-7D;
